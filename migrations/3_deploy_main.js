@@ -1,6 +1,7 @@
 var Main = artifacts.require("Main");
 var ChildFactory = artifacts.require("ChildFactory");
 
+
 module.exports = function(deployer) {
   console.log("migrations deploying...");
 
