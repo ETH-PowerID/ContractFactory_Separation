@@ -5,7 +5,6 @@ import './SingleHouseInterface.sol';
 
 contract Configuration {
   mapping (address => address) contractList;
-  mapping (address => SingleHouseInterface) houses;
   SingleHouseFactoryInterface singleHouseFactory;
 
   function Configuration(address _singleHouseFactoryAddress) {
@@ -14,10 +13,8 @@ contract Configuration {
 
   function addDevice(uint8 _deviceType, address _accountAddress) public returns (address singleHouseAddress){
     if (_deviceType == 0) {
-      address _singleHouseAddress = singleHouseFactory.createSingleHouse(_accountAddress);
-      contractList[_accountAddress] = SingleHouseInterface(_singleHouseAddress);
-      houses[_accountAddress] = SingleHouseInterface(_singleHouseAddress);
-      return _singleHouseAddress;
+      contractList[_accountAddress] = SingleHouseInterface( singleHouseFactory.createSingleHouse(_accountAddress) );
+      return contractList[_accountAddress];
     }
   }
 
@@ -26,6 +23,9 @@ contract Configuration {
   }
 
   function test(address _accountAddress) returns (uint) {
-    return houses[_accountAddress].test();
+    return SingleHouseInterface(contractList[_accountAddress]).test();
+
+    // or maybe like this?
+    /* return GeneralDevice(contractList[_accountAddress]).test(); */
   }
 }
